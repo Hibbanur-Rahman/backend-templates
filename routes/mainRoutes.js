@@ -12,6 +12,7 @@ Router.post("/register", registerUser);
 Router.post("/login", loginUser);
 Router.get("/all-users", ViewUsers);
 
-
+//teacher routes
+Router.use("/teacher", teacherRoutes);
 
 module.exports = Router;
