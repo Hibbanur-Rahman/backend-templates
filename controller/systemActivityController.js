@@ -1,5 +1,5 @@
-const httpStatusCode = require("../constants/httpStatusCode.js");
-const SystemActivityModel = require("../models/systemActivityLog.js");
+const httpStatusCode = require("../constant/httpStatusCode");
+const SystemActivityModel = require("../models/systemActivityLog");
 const getAllSystemActivityLogs = async (req, res) => {
   try {
     const systemActivityLogs = await SystemActivityModel.find().populate(
