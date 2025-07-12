@@ -1,25 +1,27 @@
 const mongoose = require("mongoose");
-const systemActivityLogSchema = new mongoose.Schema({
-    action: {
-        type: String,
-        required: false,
+const SystemActivityLogSchema=new mongoose.Schema({
+    activityType:{
+        type:String,
+        required:true
     },
-    activityType: {
-        type: String,
-        required: false,
-    },
-    performedBy: {
-        type: mongoose.Schema.Types.ObjectId,
-        refPath: "performedByRole",
-        required: false,
+    activityDescription:{
+        type:String,
+        required:true
     },
     performedByRole:{
-        type: String,
-        required: false,
+        type:String,
+        required:false
     },
-},{
-    timestamps: true,
-});
+    performedBy:{
+        type:mongoose.Schema.Types.ObjectId,
+        refPath: "performedByRole",
+        required:false
+    },
+    
 
-const SystemActivityLog = mongoose.model("SystemActivityLog", systemActivityLogSchema);
-module.exports = SystemActivityLog;
+},{
+    timestamps:true
+})
+
+const SystemActivityLog=mongoose.model("SystemActivityLog",SystemActivityLogSchema);
+module.exports=SystemActivityLog;

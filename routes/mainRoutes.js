@@ -2,15 +2,16 @@ const express = require("express");
 const Router = express.Router();
 const { login, ViewAdminDetails } = require("../controller/adminController");
 const {
-  registerUser,
-  loginUser,
-  ViewUsers,
+  Register,
+  Login,
+  ViewAllUser,
 } = require("../controller/userController");
+const teacherRoutes = require("./teacherRoutes");
 
 //user routes
-Router.post("/register", registerUser);
-Router.post("/login", loginUser);
-Router.get("/all-users", ViewUsers);
+Router.post("/register", Register);
+Router.post("/login", Login);
+Router.get("/all-users", ViewAllUser);
 
 //teacher routes
 Router.use("/teacher", teacherRoutes);

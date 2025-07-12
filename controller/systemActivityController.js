@@ -1,42 +1,28 @@
-const SystemActivityLog = require("../models/systemActivityLog");
-
-const logSystemActivity = async (action, performedBy, performedByRole) => {
+const httpStatusCode = require("../constants/httpStatusCode.js");
+const SystemActivityModel = require("../models/systemActivityLog.js");
+const getAllSystemActivityLogs = async (req, res) => {
   try {
-    const role = performedByRole === "admin" ? "Admin" : "Employee";
-    const log = new SystemActivityLog({
-      action,
-      performedBy,
-      performedByRole: role,
-    });
-    await log.save();
-  } catch (error) {
-    console.error("Error logging system activity:", error);
-  }
-};
-
-const getSystemActivity = async (req, res) => {
-  try {
-    const logs = await SystemActivityLog.find()
-      .populate("performedBy","name username fullName role")
-      .sort({ createdAt: -1 });
-    if (!logs) {
-      return res.status(400).json({
+    const systemActivityLogs = await SystemActivityModel.find().populate(
+      "performedBy",
+      "username role _id email"
+    ).sort({ createdAt: -1 });
+    if (!systemActivityLogs) {
+      return res.status(httpStatusCode.BAD_REQUEST).json({
         success: false,
-        message: "No logs found",
+        message: "No system activity logs found",
       });
     }
-    res.status(200).json({
+    return res.status(httpStatusCode.OK).json({
       success: true,
-      message: "Logs fetched successfully",
-      data: logs,
+      message: "System activity logs fetched successfully",
+      data: systemActivityLogs,
     });
   } catch (error) {
-    res.status(500).json({
+    console.log("error while getting all system activity logs:", error);
+    return res.status(httpStatusCode.INTERNAL_SERVER_ERROR).json({
       success: false,
-      message: "Failed to fetch logs",
-      error: error.message,
+      message: error.message,
     });
   }
 };
-
-module.exports = { logSystemActivity, getSystemActivity };
+module.exports = { getAllSystemActivityLogs };
